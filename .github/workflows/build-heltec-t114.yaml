@@ -1,0 +1,31 @@
+name: Build Heltec T114
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Clone Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Build Environment
+        uses: ./.github/actions/setup-build-environment
+
+      - name: Build Firmwares
+        env:
+          FIRMWARE_VERSION: v.1.14.0-custom
+        run: /usr/bin/env bash build.sh build-matching-firmwares Heltec_t114_companion
+
+      - name: Upload Workflow Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: companion-firmwares
+          path: out
+
